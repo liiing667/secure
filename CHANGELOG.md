@@ -7,7 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- Placeholder for upcoming changes.
+- `Secure.set_headers` and `Secure.set_headers_async` now deliver headers
+  atomically. The full group of header items is validated before any setter is
+  invoked, and when a sync/async `set_header`, headers-container `.set`, or
+  headers mapping write fails partway through, previously applied headers are
+  rolled back to their pre-call state. This keeps the error-page response from
+  carrying a partial policy (for example CSP/HSTS without the remaining
+  headers) and matches the all-or-nothing delivery already provided by the
+  ASGI/WSGI middleware. `HeaderSetError`, multi-valued header ordering, and
+  last-write-wins overwrite behavior are unchanged.
 
 ## [2.0.1] - 2026-04-21
 
